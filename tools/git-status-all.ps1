@@ -18,7 +18,7 @@ foreach ($repo in $repos) {
     Write-Host "== $repo ==" -ForegroundColor Cyan
 
     if (-not (Test-Path (Join-Path $path ".git"))) {
-        Write-Host "Not a Git repository: $path" -ForegroundColor Yellow
+        Write-Host "不是 Git 仓库：$path" -ForegroundColor Yellow
         continue
     }
 

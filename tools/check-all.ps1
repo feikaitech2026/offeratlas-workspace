@@ -14,7 +14,7 @@ function Invoke-Check {
     Write-Host "== $Name ==" -ForegroundColor Cyan
 
     if (-not (Test-Path $Path)) {
-        Write-Host "Missing path: $Path" -ForegroundColor Red
+        Write-Host "路径不存在：$Path" -ForegroundColor Red
         $script:failures.Add($Name)
         return
     }
@@ -27,7 +27,7 @@ function Invoke-Check {
         }
     }
     catch {
-        Write-Host "FAILED: $Name - $_" -ForegroundColor Red
+        Write-Host "检查失败：$Name - $_" -ForegroundColor Red
         $script:failures.Add($Name)
     }
     finally {
@@ -72,9 +72,9 @@ Invoke-Check `
 
 Write-Host ""
 if ($failures.Count -gt 0) {
-    Write-Host "Checks failed:" -ForegroundColor Red
+    Write-Host "以下检查失败：" -ForegroundColor Red
     $failures | ForEach-Object { Write-Host "- $_" -ForegroundColor Red }
     exit 1
 }
 
-Write-Host "All checks passed." -ForegroundColor Green
+Write-Host "全部检查通过。" -ForegroundColor Green

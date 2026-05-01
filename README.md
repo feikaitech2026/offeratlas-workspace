@@ -1,18 +1,17 @@
-# OfferAtlas Workspace Control
+# OfferAtlas 工作区总控仓库
 
-This root directory is the OfferAtlas meta workspace. It exists to coordinate the
-independent service repositories below it without mixing their Git histories.
+这个根目录是 OfferAtlas 的总控工作区，用来管理多仓库协作规则、全局状态和本地辅助脚本。它不承载业务代码，也不合并各子项目的 Git 历史。
 
-## What This Repo Owns
+## 这个仓库管理什么
 
-- Workspace rules: `AGENTS.md`, `THREADS.md`
-- Overall status: `PROJECT_STATUS.md`
-- Local orchestration helpers: `tools/`
-- Root ignore rules and workspace notes
+- 工作区规则：`AGENTS.md`、`THREADS.md`
+- 项目总览：`PROJECT_STATUS.md`
+- 本地辅助脚本：`tools/`
+- 根目录忽略规则和总控说明
 
-## What This Repo Does Not Own
+## 这个仓库不管理什么
 
-The service directories are independent Git repositories:
+下面这些目录都是独立 Git 仓库，需要进入各自目录单独提交和推送：
 
 - `OfferAtlas Pro/`
 - `OfferAtlas Student/`
@@ -23,33 +22,30 @@ The service directories are independent Git repositories:
 - `OfferAtlas Crawler/`
 - `OfferAtlas Docs/`
 
-Do not add those directories to the root repository. Commit and push each service
-inside its own repository.
+不要把这些子项目目录加入根仓库。根仓库只记录总控文件和辅助脚本。
 
-## Daily Commands
+## 日常命令
 
-Show all service repository states:
+查看所有子仓库状态：
 
 ```powershell
 .\tools\git-status-all.ps1
 ```
 
-Run the standard local verification checks:
+运行本地标准检查：
 
 ```powershell
 .\tools\check-all.ps1
 ```
 
-The check script runs builds/tests only. It does not start services, stop
-services, run database migrations, or modify databases.
+`check-all.ps1` 只运行构建和测试，不会启动服务、停止服务、执行数据库迁移，也不会修改数据库。
 
-## Working Rules
+## 开工顺序
 
-Before assigning a coding thread, read:
+每次开新线程或新任务前，建议按顺序阅读：
 
 1. `AGENTS.md`
 2. `THREADS.md`
-3. The owned service README or docs
+3. 当前负责子项目的 README 或接口文档
 
-For cross-service work, update the API contract first, then implement each side
-inside its own repository.
+涉及前后端或跨服务联调时，先更新接口契约，再分别修改对应服务。

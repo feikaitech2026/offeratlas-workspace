@@ -105,61 +105,61 @@ docker compose -f docker-compose.local.yml up -d scholargraph-api core-api
 - Use structured parsers and existing CLI/service patterns instead of ad hoc string manipulation where practical.
 - Do not introduce direct frontend-to-ScholarGraph calls, direct Crawler-to-Core writes, or shared tables across service databases.
 
-## Parallel Thread Rules
+## Parallel Thread Rules / 并行线程规则
 
-This workspace is commonly developed by four parallel coding threads. Each thread must stay inside its own ownership boundary unless the user explicitly asks for cross-service coordination.
+本工作区通常会由多个编码线程同时推进。除非用户明确要求跨服务联调，否则每个线程必须只待在自己的职责边界内。
 
-Thread ownership:
+线程归属：
 
-- `OfferAtlas Pro/`: B-side frontend only. It may change UI, routes, API clients, and frontend mocks for the consultant/admin product.
-- `offeratlas-core-api/`: B/C-side business backend only. It owns auth, tenants, RBAC, student/application business data, and calls to ScholarGraph.
-- `OfferAtlas DataAdmin/`: data platform frontend only. It may change dashboard UI and DataAdmin API clients.
-- `offeratlas-data-admin-api/`: data platform backend only. It owns read-only data governance/report APIs and its own `offeratlas_data_admin` state.
+- `OfferAtlas Pro/`：B 端前端，只改顾问端/机构端 UI、路由、前端 API client 和临时 mock。
+- `offeratlas-core-api/`：B/C 端业务后端，负责认证、租户、RBAC、学生、申请业务数据，以及对 ScholarGraph 的内部调用。
+- `OfferAtlas DataAdmin/`：数据平台前端，只改数据治理看板 UI 和 DataAdmin API client。
+- `offeratlas-data-admin-api/`：数据平台后端，负责数据治理/报表 API 和自己的 `offeratlas_data_admin` 状态。
 
-Do not make cross-thread edits by default:
+默认不要跨线程改动：
 
-- Pro frontend threads must not edit Core API code unless the user explicitly requests a coordinated API change.
-- Core API threads must not edit Pro or DataAdmin UI code unless the user explicitly requests frontend integration.
-- DataAdmin frontend threads must not edit DataAdmin API code unless the user explicitly requests a coordinated API change.
-- DataAdmin API threads must not edit Core API, ScholarGraph, Crawler, or frontend code unless the contract requires it and the user approves the scope.
+- Pro 前端线程不要改 Core API 代码，除非用户明确要求同步接口实现。
+- Core API 线程不要改 Pro 或 DataAdmin UI，除非用户明确要求前后端联调。
+- DataAdmin 前端线程不要改 DataAdmin API，除非用户明确要求同步接口实现。
+- DataAdmin API 线程不要改 Core API、ScholarGraph、Crawler 或前端代码，除非契约要求且用户确认范围。
 
-Use API contracts instead of guessing:
+不要靠猜字段协作，要靠接口契约：
 
-- Pro <-> Core API changes must update the Core API contract/documentation or a clearly named README note.
-- DataAdmin <-> DataAdmin API changes must update a DataAdmin API contract/README note before both sides rely on new fields.
-- A frontend may add temporary local mocks only inside its own project and should mark them clearly as temporary.
+- Pro 和 Core API 的改动，需要同步更新 Core API 契约文档或明确的 README 说明。
+- DataAdmin 和 DataAdmin API 的改动，需要同步更新 DataAdmin API 契约文档或 README 说明。
+- 前端可以在自己项目内加临时 mock，但必须标清楚是临时数据。
 
-Local ports are reserved:
+本地端口约定：
 
-- `OfferAtlas Pro`: `5173`
-- `offeratlas-core-api`: `18080`
-- `OfferAtlas DataAdmin`: `6173`
-- `offeratlas-data-admin-api`: `8010`
-- `OfferAtlas ScholarGraph`: `8000`
-- PostgreSQL: `15432`
-- Redis: `16379`
-- Meilisearch: `17700`
-- MinIO: `9100` and `9101`
+- `OfferAtlas Pro`：`5173`
+- `offeratlas-core-api`：`18080`
+- `OfferAtlas DataAdmin`：`6173`
+- `offeratlas-data-admin-api`：`8010`
+- `OfferAtlas ScholarGraph`：`8000`
+- PostgreSQL：`15432`
+- Redis：`16379`
+- Meilisearch：`17700`
+- MinIO：`9100` 和 `9101`
 
-Database boundaries:
+数据库边界：
 
-- Core API writes only `offeratlas_core`.
-- ScholarGraph writes only `offeratlas_scholar`.
-- Crawler writes only `offeratlas_crawler`.
-- DataAdmin API may read ScholarGraph/Crawler databases and write only its own `offeratlas_data_admin` database.
-- No thread should introduce shared tables across service databases.
+- Core API 只写 `offeratlas_core`。
+- ScholarGraph 只写 `offeratlas_scholar`。
+- Crawler 只写 `offeratlas_crawler`。
+- DataAdmin API 可以读取 ScholarGraph/Crawler 数据库，但只能写自己的 `offeratlas_data_admin` 数据库。
+- 不要在不同服务数据库之间新增共享表。
 
-Branching guidance:
+分支建议：
 
-- Prefer thread-scoped branches such as `pro/<topic>`, `core/<topic>`, `data-admin-ui/<topic>`, and `data-admin-api/<topic>`.
-- Merge to `main` only after the owned service passes its narrow verification command.
-- If a change requires multiple repos, commit and push each repo separately with matching messages and mention the cross-repo dependency.
+- 优先使用线程命名分支，例如 `pro/<topic>`、`core/<topic>`、`data-admin-ui/<topic>`、`data-admin-api/<topic>`。
+- 合并到 `main` 前，先跑当前服务自己的最小验证命令。
+- 如果一次改动涉及多个仓库，每个仓库单独提交和推送，并在交付说明里写清楚跨仓库依赖。
 
-Before starting work in a thread:
+线程开工前：
 
-- Read this file, then read `THREADS.md`, then read the owned service README.
-- Check `git status --short` in the owned repository and avoid overwriting unrelated user or other-thread changes.
-- Confirm whether the task is single-service or cross-service before editing files.
+- 先读本文件，再读 `THREADS.md`，再读当前负责服务的 README。
+- 在负责仓库里执行 `git status --short`，不要覆盖用户或其他线程留下的无关改动。
+- 编辑前先确认这是单服务任务还是跨服务任务。
 
 ## Verification Checklist
 
