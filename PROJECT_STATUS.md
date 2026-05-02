@@ -1,6 +1,6 @@
 # OfferAtlas 项目状态总览
 
-最后更新：2026-05-01
+最后更新：2026-05-02
 
 这个文件是本地多仓库工作区的轻量总控板，只记录当前状态、优先级和运行约定。更详细的产品、接口、数据库和部署设计，仍然放在 `OfferAtlas Docs/` 或对应服务文档里。
 
@@ -15,20 +15,21 @@
 | DataAdmin API | `offeratlas-data-admin-api/` | `pytest` 通过 | 负责数据平台报表和 `offeratlas_data_admin` 状态。 |
 | ScholarGraph | `OfferAtlas ScholarGraph/` | `compileall app` 通过 | 负责院校/专业知识库、搜索和匹配。 |
 | Crawler | `OfferAtlas Crawler/` | `compileall src` 通过 | 负责公开数据采集和导出。 |
-| 文档仓库 | `OfferAtlas Docs/` | 手动维护 | 架构、接口、数据库和部署文档的事实来源。 |
+| 文档仓库 | `OfferAtlas Docs/` | 已归档并新增总控文档 | 架构、接口、数据库、部署、运行手册和多线程协作的事实来源。 |
 
 ## 当前优先级
 
-1. 四个活跃开发线程严格遵守 `THREADS.md` 里的目录边界。
+1. 多个活跃开发线程严格遵守 `THREADS.md` 和 `OfferAtlas Docs/多线程开发操作手册.md` 里的目录边界。
 2. 每次开工前和收工前运行 `tools\git-status-all.ps1`。
 3. 每个子项目提交前先跑自己的最小检查命令。
-4. 前后端联调前先更新接口契约文件。
+4. 前后端联调前先更新 `OfferAtlas Docs/` 中的接口契约文件。
 5. 本地全链路跑稳定前，不急着购买或配置阿里云资源。
 
 ## 本地待办
 
 - DataAdmin 前端构建包较大，后续可以做路由级拆包。
-- 根目录 meta 仓库已经配置远程：`git@github.com:feikaitech2026/offeratlas-workspace.git`。
+- 根目录和子仓库已经切到新 GitHub 账号 `plinovichjosie740-debug` 对应远程。
+- 文档已经集中归档到 `OfferAtlas Docs/`，子项目不再新建 `docs/` 文档目录。
 - `AGENTS.md` 中有中文内容，如果 PowerShell 代码页不对，终端里可能显示乱码；文件本身仍作为根目录代理规则。
 
 ## 本地端口表

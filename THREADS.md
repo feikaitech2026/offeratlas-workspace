@@ -73,7 +73,7 @@
 - `data-admin-api/<topic>`
 - `scholargraph/<topic>`
 - `crawler/<topic>`
-- `docs/<topic>`
+- `docs/<topic>` 分支仅用于 `OfferAtlas Docs/` 总文档仓库，不在子项目内新建 `docs/` 文档目录。
 
 尽量避免多个线程同时直接提交到同一个分支。如果两个线程必须改同一个仓库，先拆清楚文件范围，再开始编辑。
 

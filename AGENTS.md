@@ -9,7 +9,7 @@
 - `offeratlas-core-api/`: Java Spring Boot 核心业务后端，负责认证、租户、RBAC、学生、申请、文书、文件、消息、套餐、审计和平台后台。
 - `OfferAtlas ScholarGraph/`: Python FastAPI 院校知识服务，负责正式院校库、专业库、搜索索引、智能匹配、推荐解释和院校事实数据。
 - `OfferAtlas Crawler/`: Python 数据采集器，负责公开院校/项目/录取要求采集、暂存、解析和导出。
-- `OfferAtlas Docs/`: 产品、接口、数据库、架构、部署与迁移文档。
+- `OfferAtlas Docs/`: 产品、接口、数据库、架构、部署与迁移文档。后续生成的说明文档、接口文档和跨服务文档统一放在这里；子项目如需独立文档，按子项目目录名在这里建子目录。
 - `OfferAtlas-Secrets/`: 本地密钥备份目录，禁止提交到 Git。
 - `tools/`: 本地辅助脚本。
 
