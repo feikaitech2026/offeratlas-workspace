@@ -1,28 +1,122 @@
-# OfferAtlas 工作区总控仓库
+# OfferAtlas Workspace
 
-这个根目录是 OfferAtlas 的总控工作区，用来管理多仓库协作规则、全局状态和本地辅助脚本。它不承载业务代码，也不合并各子项目的 Git 历史。
+这是 `OfferAtlas` 的根目录总控仓库，用来管理多仓库协作规则、本地联调脚本、项目状态说明和工作区级文档。
 
-## 这个仓库管理什么
+它**不承载业务代码**，也**不合并**各子项目自己的 Git 历史。业务代码仍然分别放在下面 8 个独立仓库里。
 
-- 工作区规则：`AGENTS.md`、`THREADS.md`
-- 项目总览：`PROJECT_STATUS.md`
+## 根仓库职责
+
+- 工作区规则：`AGENTS.md`
+- 并行线程边界：`THREADS.md`
+- 项目状态板：`PROJECT_STATUS.md`
 - 本地辅助脚本：`tools/`
-- 根目录忽略规则和总控说明
+- 一键启动 / 暂停 / 状态入口
 
-## 这个仓库不管理什么
+## 8 个子仓库入口
 
-下面这些目录都是独立 Git 仓库，需要进入各自目录单独提交和推送：
+当前统一使用 GitHub 账号 `plinovichjosie740-debug`。
 
-- `OfferAtlas Pro/`
-- `OfferAtlas Student/`
-- `offeratlas-core-api/`
-- `OfferAtlas DataAdmin/`
-- `offeratlas-data-admin-api/`
-- `OfferAtlas ScholarGraph/`
-- `OfferAtlas Crawler/`
-- `OfferAtlas Docs/`
+1. `OfferAtlas Pro/`
+   - 仓库：[`offeratlas-pro`](https://github.com/plinovichjosie740-debug/offeratlas-pro)
+   - 作用：B 端前端，顾问/机构工作台
 
-不要把这些子项目目录加入根仓库。根仓库只记录总控文件和辅助脚本。
+2. `OfferAtlas Student/`
+   - 仓库：[`offeratlas-student`](https://github.com/plinovichjosie740-debug/offeratlas-student)
+   - 作用：C 端前端，学生/家长门户
+
+3. `offeratlas-core-api/`
+   - 仓库：[`offeratlas-core-api`](https://github.com/plinovichjosie740-debug/offeratlas-core-api)
+   - 作用：核心业务后端，认证、租户、RBAC、学生、申请等
+
+4. `OfferAtlas ScholarGraph/`
+   - 仓库：[`offeratlas-scholargraph`](https://github.com/plinovichjosie740-debug/offeratlas-scholargraph)
+   - 作用：院校/项目知识库、搜索、匹配、解释
+
+5. `OfferAtlas Crawler/`
+   - 仓库：[`offeratlas-crawler`](https://github.com/plinovichjosie740-debug/offeratlas-crawler)
+   - 作用：公开院校与项目数据采集、解析、导出
+
+6. `OfferAtlas DataAdmin/`
+   - 仓库：[`offeratlas-data-admin`](https://github.com/plinovichjosie740-debug/offeratlas-data-admin)
+   - 作用：数据平台前端
+
+7. `offeratlas-data-admin-api/`
+   - 仓库：[`offeratlas-data-admin-api`](https://github.com/plinovichjosie740-debug/offeratlas-data-admin-api)
+   - 作用：数据平台后端、报表与治理接口
+
+8. `OfferAtlas Docs/`
+   - 仓库：[`offeratlas-docs`](https://github.com/plinovichjosie740-debug/offeratlas-docs)
+   - 作用：架构、接口、数据库、部署与迁移文档
+
+## 本地一键联调
+
+根目录已经提供一套统一的本地控制脚本：
+
+- [一键启动.cmd](/d:/dev-env/workspace/OfferAtlas/一键启动.cmd)
+- [一键暂停.cmd](/d:/dev-env/workspace/OfferAtlas/一键暂停.cmd)
+- [一键状态.cmd](/d:/dev-env/workspace/OfferAtlas/一键状态.cmd)
+
+对应 PowerShell 脚本在：
+
+- [tools/start-local-stack.ps1](/d:/dev-env/workspace/OfferAtlas/tools/start-local-stack.ps1)
+- [tools/stop-local-stack.ps1](/d:/dev-env/workspace/OfferAtlas/tools/stop-local-stack.ps1)
+- [tools/status-local-stack.ps1](/d:/dev-env/workspace/OfferAtlas/tools/status-local-stack.ps1)
+
+### 启动顺序
+
+一键启动会按依赖顺序执行：
+
+1. 启动基础设施容器
+   - PostgreSQL
+   - Redis
+   - Meilisearch
+   - MinIO
+
+2. 确保 `offeratlas_data_admin` 数据库存在
+
+3. 执行 `ScholarGraph` 迁移并启动服务
+
+4. 启动 `Core API`
+
+5. 执行 `DataAdmin API` 迁移并启动服务
+
+6. 启动三个前端
+   - Pro
+   - Student
+   - DataAdmin
+
+### 暂停行为
+
+一键暂停会：
+
+1. 先停止本地应用进程
+2. 再停止 `offeratlas-*` 基础设施容器
+3. 同时清理旧的 `scholargraph-*` 独立容器残留
+4. 清空 PID 记录
+
+### 状态查看
+
+一键状态会显示：
+
+- 当前受管应用端口是否在线
+- 当前受管 Docker 容器状态
+- 历史 `scholargraph-*` 容器是否残留
+- PID 文件记录
+
+## 本地端口约定
+
+| 组件 | 端口 |
+| --- | --- |
+| OfferAtlas Pro | `5173` |
+| OfferAtlas Student | `5174` |
+| OfferAtlas DataAdmin | `6173` |
+| Core API | `18080` |
+| ScholarGraph | `8000` |
+| DataAdmin API | `8010` |
+| PostgreSQL | `15432` |
+| Redis | `16379` |
+| Meilisearch | `17700` |
+| MinIO API / Console | `9100` / `9101` |
 
 ## 日常命令
 
@@ -32,20 +126,38 @@
 .\tools\git-status-all.ps1
 ```
 
-运行本地标准检查：
+运行统一最小检查：
 
 ```powershell
 .\tools\check-all.ps1
 ```
 
-`check-all.ps1` 只运行构建和测试，不会启动服务、停止服务、执行数据库迁移，也不会修改数据库。
-
 ## 开工顺序
 
-每次开新线程或新任务前，建议按顺序阅读：
+每次开新线程或接新任务，建议先看：
 
 1. `AGENTS.md`
 2. `THREADS.md`
-3. 当前负责子项目的 README 或接口文档
+3. 当前负责服务自己的 `README.md`
+4. 如涉及接口或数据库，再看 `OfferAtlas Docs/`
 
-涉及前后端或跨服务联调时，先更新接口契约，再分别修改对应服务。
+## GitHub 账号资料补齐建议
+
+你可以在新账号里顺手补这几项，后面协作会更干净：
+
+1. `Settings -> Public profile`
+   - 补 `Name`
+   - 补 `Bio`
+   - 选一个稳定头像
+
+2. `Settings -> Emails`
+   - 添加常用邮箱
+   - 设为主邮箱
+   - 勾选需要的通知邮箱设置
+
+3. `Settings -> Password and authentication`
+   - 开启 2FA
+
+4. `Settings -> SSH and GPG keys`
+   - 保留当前正在用的新 SSH key
+   - 如果旧账号 key 以后彻底不用，就不要再加回去
