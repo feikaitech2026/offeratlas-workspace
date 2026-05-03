@@ -28,7 +28,7 @@
 ## 本地待办
 
 - DataAdmin 前端构建包较大，后续可以做路由级拆包。
-- 根目录和子仓库已经切到新 GitHub 账号 `plinovichjosie740-debug` 对应远程。
+- 根目录和子仓库已经切回 GitHub 账号 `feikaitech2026` 对应远程。
 - 文档已经集中归档到 `OfferAtlas Docs/`，子项目不再新建 `docs/` 文档目录。
 - `AGENTS.md` 中有中文内容，如果 PowerShell 代码页不对，终端里可能显示乱码；文件本身仍作为根目录代理规则。
 

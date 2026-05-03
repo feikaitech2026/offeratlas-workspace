@@ -14,38 +14,38 @@
 
 ## 8 个子仓库入口
 
-当前统一使用 GitHub 账号 `plinovichjosie740-debug`。
+当前统一使用 GitHub 账号 `feikaitech2026`。
 
 1. `OfferAtlas Pro/`
-   - 仓库：[`offeratlas-pro`](https://github.com/plinovichjosie740-debug/offeratlas-pro)
+   - 仓库：[`offeratlas-pro`](https://github.com/feikaitech2026/offeratlas-pro)
    - 作用：B 端前端，顾问/机构工作台
 
 2. `OfferAtlas Student/`
-   - 仓库：[`offeratlas-student`](https://github.com/plinovichjosie740-debug/offeratlas-student)
+   - 仓库：[`offeratlas-student`](https://github.com/feikaitech2026/offeratlas-student)
    - 作用：C 端前端，学生/家长门户
 
 3. `offeratlas-core-api/`
-   - 仓库：[`offeratlas-core-api`](https://github.com/plinovichjosie740-debug/offeratlas-core-api)
+   - 仓库：[`offeratlas-core-api`](https://github.com/feikaitech2026/offeratlas-core-api)
    - 作用：核心业务后端，认证、租户、RBAC、学生、申请等
 
 4. `OfferAtlas ScholarGraph/`
-   - 仓库：[`offeratlas-scholargraph`](https://github.com/plinovichjosie740-debug/offeratlas-scholargraph)
+   - 仓库：[`offeratlas-scholargraph`](https://github.com/feikaitech2026/offeratlas-scholargraph)
    - 作用：院校/项目知识库、搜索、匹配、解释
 
 5. `OfferAtlas Crawler/`
-   - 仓库：[`offeratlas-crawler`](https://github.com/plinovichjosie740-debug/offeratlas-crawler)
+   - 仓库：[`offeratlas-crawler`](https://github.com/feikaitech2026/offeratlas-crawler)
    - 作用：公开院校与项目数据采集、解析、导出
 
 6. `OfferAtlas DataAdmin/`
-   - 仓库：[`offeratlas-data-admin`](https://github.com/plinovichjosie740-debug/offeratlas-data-admin)
+   - 仓库：[`offeratlas-data-admin`](https://github.com/feikaitech2026/offeratlas-data-admin)
    - 作用：数据平台前端
 
 7. `offeratlas-data-admin-api/`
-   - 仓库：[`offeratlas-data-admin-api`](https://github.com/plinovichjosie740-debug/offeratlas-data-admin-api)
+   - 仓库：[`offeratlas-data-admin-api`](https://github.com/feikaitech2026/offeratlas-data-admin-api)
    - 作用：数据平台后端、报表与治理接口
 
 8. `OfferAtlas Docs/`
-   - 仓库：[`offeratlas-docs`](https://github.com/plinovichjosie740-debug/offeratlas-docs)
+   - 仓库：[`offeratlas-docs`](https://github.com/feikaitech2026/offeratlas-docs)
    - 作用：架构、接口、数据库、部署与迁移文档
 
 ## 本地一键联调
